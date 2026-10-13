@@ -1,0 +1,27 @@
+# Dependencias y builds
+node_modules/
+dist/
+.cache/
+
+# Secretos y variables locales
+.env
+.env.*
+.dev.vars
+
+# Video: audios, renders y miniaturas (pesados y regenerables)
+video/salida/
+video/temas/*/audio/
+*.mp4
+*.mov
+*.mp3
+*.wav
+*.m4a
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Uso interno (no se publica)
+.claude/
+CLAUDE.md
+trabajo/
