@@ -1,0 +1,193 @@
+{
+  "slug": "skills-claude-code",
+  "formato": "horizontal",
+  "voz": "es-BO-MarceloNeural",
+  "dominio": "",
+  "subtitulos": false,
+  "escenas": [
+    {
+      "tipo": "titulo",
+      "pantalla": "Título, subtítulo y etiqueta",
+      "titulo": "Skills en Claude Code",
+      "subtitulo": "qué son y cómo crear una",
+      "etiqueta": "Claude Code",
+      "narracion": "¿Cuántas veces has pegado las mismas instrucciones en el chat con Claude Code? Hoy vas a convertirlas en una skill: una carpeta que Claude carga sola, o que llamas con una barra y su nombre. Esto es Skills en Claude Code: qué son y cómo crear una."
+    },
+    {
+      "tipo": "que-es",
+      "pantalla": "Cuatro tarjetas que aparecen según se narra",
+      "titulo": "Qué es una skill",
+      "items": [
+        {
+          "texto": "Una carpeta con un archivo SKILL.md con instrucciones para Claude. Se carga sola o con barra y su nombre.",
+          "ancla": "Una skill es una carpeta"
+        },
+        {
+          "texto": "Te conviene cuando repites instrucciones en el chat. El cuerpo solo se carga al usarla; al inicio Claude ve nombre y descripción.",
+          "ancla": "¿Cuándo te conviene"
+        },
+        {
+          "texto": "Los comandos personalizados se fusionaron con las skills: ambos crean el mismo comando con barra.",
+          "ancla": "Un dato reciente"
+        },
+        {
+          "texto": "Dos sitios: el proyecto (se comparte con el equipo) o tu usuario (todos tus proyectos). Si coinciden, gana la personal.",
+          "ancla": "Puedes guardarlas"
+        }
+      ],
+      "narracion": "Una skill es una carpeta con un archivo llamado SKILL punto md. Dentro van instrucciones para Claude. Claude la carga cuando tu petición encaja con su descripción, o tú la invocas escribiendo una barra y su nombre. Sigue el estándar abierto Agent Skills, con extras propios de Claude Code. ¿Cuándo te conviene? Cuando repites las mismas instrucciones en el chat, o cuando una sección de tu CLAUDE punto md ya se volvió un procedimiento. Lo mejor: el cuerpo de la skill solo se carga al usarla. Al inicio, Claude solo ve el nombre y la descripción, así que el material largo cuesta poco hasta que hace falta. Un dato reciente: los comandos personalizados se fusionaron con las skills. Un archivo en la carpeta de commands y una skill en la carpeta de skills crean el mismo comando con barra, y los commands antiguos siguen funcionando. Puedes guardarlas en dos sitios: en la carpeta de skills de tu proyecto, para compartirlas con el equipo haciendo commit, o en la carpeta de skills de tu usuario, para usarlas en todos tus proyectos. Si dos tienen el mismo nombre, la personal gana a la del proyecto."
+    },
+    {
+      "tipo": "que-es",
+      "pantalla": "Cuatro requisitos que aparecen según se narra",
+      "titulo": "Antes de empezar",
+      "items": [
+        {
+          "texto": "Claude Code instalado en tu terminal",
+          "ancla": "Claude Code instalado"
+        },
+        {
+          "texto": "Un proyecto o tu carpeta de usuario donde guardar la skill",
+          "ancla": "Un proyecto, o"
+        },
+        {
+          "texto": "Saber lo básico de YAML para el encabezado del archivo",
+          "ancla": "Saber lo básico"
+        },
+        {
+          "texto": "En Windows, Git Bash: el ejemplo ejecuta comandos de bash",
+          "ancla": "Y si usas Windows"
+        }
+      ],
+      "narracion": "Antes de empezar necesitas cuatro cosas. Claude Code instalado en tu terminal. Un proyecto, o tu carpeta de usuario, donde guardar la skill. Saber lo básico de YAML para el encabezado del archivo. Y si usas Windows, Git Bash, porque el ejemplo ejecuta comandos de bash."
+    },
+    {
+      "tipo": "paso",
+      "pantalla": "Paso 1 con su código",
+      "numero": 1,
+      "titulo": "Crea la carpeta de la skill",
+      "nota": "El nombre de la carpeta es el nombre del comando.",
+      "codigo": {
+        "archivo": "terminal",
+        "contenido": "mkdir -p $HOME/.claude/skills/summarize-changes"
+      },
+      "narracion": "Paso uno: crea la carpeta de la skill. El nombre de la carpeta será el nombre del comando. Este ejemplo crea una skill personal, llamada summarize changes, dentro de la carpeta de skills de tu usuario. Para una skill de proyecto, usa la carpeta de skills dentro del repositorio."
+    },
+    {
+      "tipo": "paso",
+      "pantalla": "Paso 2 con su código",
+      "numero": 2,
+      "titulo": "Escribe el archivo SKILL.md",
+      "nota": "Frontmatter arriba, instrucciones debajo. Menos de 500 líneas.",
+      "codigo": {
+        "archivo": "SKILL.md",
+        "contenido": "---\nname: summarize-changes\ndescription: Resume los cambios sin commit y señala lo riesgoso. Úsala cuando pregunten qué cambió o pidan un mensaje de commit.\n---\n\n## Cambios actuales\n\n!`git diff HEAD 2>/dev/null || echo \"No hay cambios que mostrar.\"`\n\n## Instrucciones\n\nResume los cambios de arriba en dos o tres viñetas y luego lista los riesgos."
+      },
+      "narracion": "Paso dos: escribe el archivo SKILL punto md. Arriba va el frontmatter, un encabezado entre tres guiones con nombre y descripción, que empieza en la primera línea. Debajo, las instrucciones. La línea que empieza con un signo de exclamación ejecuta git diff antes de que Claude lea la skill y pega su salida ahí. Si ese comando falla, la skill se cancela; por eso, cuando git diff falla, el ejemplo muestra un aviso en su lugar. Mantén el archivo por debajo de quinientas líneas. Si necesitas más material, crea archivos de apoyo, como un reference punto md o una carpeta de scripts, y enlázalos desde SKILL punto md con rutas relativas."
+    },
+    {
+      "tipo": "paso",
+      "pantalla": "Paso 3 con su código",
+      "numero": 3,
+      "titulo": "Valida el frontmatter",
+      "nota": "Necesitas Claude Code 2.1.233 o superior.",
+      "codigo": {
+        "archivo": "terminal",
+        "contenido": "claude plugin validate $HOME/.claude/skills"
+      },
+      "narracion": "Paso tres: valida el frontmatter. Este comando revisa que el encabezado esté bien escrito, apuntando a la carpeta de skills de tu usuario. Si algo falla en el YAML, te avisa. Necesitas Claude Code, versión dos punto uno punto dos tres tres, o superior."
+    },
+    {
+      "tipo": "paso",
+      "pantalla": "Paso 4 con su código",
+      "numero": 4,
+      "titulo": "Pruébala en una sesión",
+      "nota": "Invócala con barra o pide algo que encaje con la descripción.",
+      "codigo": {
+        "archivo": "Claude Code",
+        "contenido": "/summarize-changes\n\nWhat skills are available?"
+      },
+      "narracion": "Paso cuatro: pruébala en una sesión. Invócala con una barra y su nombre, o pide algo que encaje con la descripción, como qué cambió en el repo. Para ver qué skills tiene Claude, pregúntale qué skills tiene disponibles."
+    },
+    {
+      "tipo": "paso",
+      "pantalla": "Paso 5 con su código",
+      "numero": 5,
+      "titulo": "Depura si no aparece",
+      "nota": "Sin resultados: el registro no detectó errores. Para lo demás, valida.",
+      "codigo": {
+        "archivo": "terminal",
+        "contenido": "claude --debug-file debug.log\n# Dentro de la sesión, sal con /exit\n\n# PowerShell\nSelect-String -Path debug.log -Pattern \"failed to parse\" | Select-String \"summarize-changes\"\n\n# Otros terminales\ngrep -i \"failed to parse\" debug.log | grep summarize-changes"
+      },
+      "narracion": "Paso cinco: depura si no aparece. El primer comando abre una sesión y guarda su registro en un archivo de depuración. Sal de la sesión con barra exit. Después, busca en el archivo las líneas que dicen failed to parse junto al nombre de tu skill; en PowerShell y en otros terminales el comando cambia, pero el resultado es el mismo. Si no sale nada, el registro no detectó errores. Solo avisa de algunos errores de sintaxis YAML; para lo demás, como un encabezado sin la línea de cierre o un campo mal escrito, usa el comando de validación. Ojo: abrir Claude solo con la opción debug no muestra estos errores en pantalla."
+    },
+    {
+      "tipo": "consejo",
+      "pantalla": "Tarjeta de consejo",
+      "etiqueta": "Un consejo",
+      "titulo": "La descripción lo es todo",
+      "texto": "La descripción lo es todo. Pon primero el caso clave y usa las palabras que tú dirías al pedirlo. Si la descripción es vaga, Claude no sabrá cuándo cargar tu skill.",
+      "narracion": "Un consejo: la descripción lo es todo. Pon primero el caso clave y usa las palabras que tú dirías al pedirlo. Si la descripción es vaga, Claude no sabrá cuándo cargar tu skill."
+    },
+    {
+      "tipo": "errores",
+      "pantalla": "Cinco problemas con su solución",
+      "titulo": "Si algo no funciona",
+      "items": [
+        {
+          "problema": "La skill no se activa sola",
+          "solucion": "Falta lenguaje natural y el caso clave primero en la descripción.",
+          "ancla": "Si la skill no se activa sola"
+        },
+        {
+          "problema": "Claude no usa la descripción aunque la invocas con barra",
+          "solucion": "YAML mal formado o tres guiones fuera de la primera línea. Revisa con claude plugin validate.",
+          "ancla": "Si Claude no usa la descripción"
+        },
+        {
+          "problema": "Un campo del frontmatter no hace nada",
+          "solucion": "Los campos desconocidos se ignoran sin aviso. Escribe cada nombre exacto.",
+          "ancla": "Si un campo del frontmatter"
+        },
+        {
+          "problema": "Claude deja de seguir la skill tras unos turnos",
+          "solucion": "El contenido no se relee. Escríbela para toda la tarea y pon lo importante arriba.",
+          "ancla": "Si Claude deja de seguir"
+        },
+        {
+          "problema": "En Windows falla con el aviso de que no encuentra Git Bash",
+          "solucion": "Instala Git Bash, o añade shell: powershell en el frontmatter.",
+          "ancla": "Y en Windows"
+        }
+      ],
+      "narracion": "¿Algo no funciona? Estos son los cinco problemas más comunes. Si la skill no se activa sola, la descripción no tiene las palabras que usarías al pedirlo. Escríbela con lenguaje natural y el caso clave primero, y comprueba que aparece entre las skills disponibles. Si Claude no usa la descripción aunque la invocas con barra, el YAML está mal formado o los tres guiones no están en la primera línea; revísalo con el comando de validación y luego con el registro de depuración. Si un campo del frontmatter no hace nada, recuerda que los campos desconocidos se ignoran sin aviso: escribe cada nombre exactamente como en la documentación. Si Claude deja de seguir la skill tras unos turnos, el contenido no se vuelve a leer: escríbela para toda la tarea, vuelve a invocarla y pon lo importante arriba, porque cuando Claude resume la conversación solo conserva el inicio. Y en Windows, si falla porque no encuentra Git Bash, instálalo. Si prefieres PowerShell, añade shell powershell en el frontmatter y reescribe esos comandos en su sintaxis."
+    },
+    {
+      "tipo": "resumen",
+      "pantalla": "Tres ideas para recordar",
+      "titulo": "Para recordar",
+      "items": [
+        {
+          "texto": "Una skill es una carpeta con un SKILL.md: nombre, descripción e instrucciones.",
+          "ancla": "Una skill es una carpeta"
+        },
+        {
+          "texto": "Créala en tu proyecto o en tu usuario, valídala y pruébala con barra y su nombre.",
+          "ancla": "Créala en tu proyecto"
+        },
+        {
+          "texto": "Cuida la descripción y, si algo falla, empieza por validar.",
+          "ancla": "Cuida la descripción"
+        }
+      ],
+      "narracion": "Una skill es una carpeta con un SKILL punto md: un encabezado con nombre y descripción, y debajo tus instrucciones. Créala en tu proyecto o en tu carpeta de usuario, valídala con el comando de validación y pruébala con barra y su nombre. Cuida la descripción, escribe bien los nombres de los campos y, si algo falla, empieza por validar. Así dejas de repetir instrucciones y Claude trabaja a tu manera."
+    },
+    {
+      "tipo": "cierre",
+      "pantalla": "Ruta del tema (dominio configurable)",
+      "titulo": "Guía completa",
+      "texto": "Todos los comandos, en la página de este tema",
+      "narracion": "Y eso es todo. Tienes la guía completa, con todos los comandos, en la página de este tema en el sitio de Code and Coffee. Nos vemos en el siguiente episodio."
+    }
+  ]
+}

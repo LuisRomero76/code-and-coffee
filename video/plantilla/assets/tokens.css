@@ -1,0 +1,43 @@
+/* Code & Coffee: tokens de color, tipografía y animaciones de Moka.
+   Fuentes: Bricolage Grotesque (títulos y texto), JetBrains Mono (solo código), Fraunces itálica (solo el & del logo). */
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Fraunces:ital,opsz,wght@1,9..144,600&family=JetBrains+Mono:wght@400;600&display=swap');
+:root{
+  --espresso:#2A1E17; --tostado:#1E1611; --crema:#F3EBDD; --terracota:#D97757; --brasa:#F29A78;
+  --tueste:#8A5A3B; --leche:#FBF7F0; --grano:#5B4335; --cardamomo:#6F8F5E;
+  --bg:var(--crema); --surface:var(--leche); --ink:var(--espresso); --muted:var(--grano);
+  --line:rgba(42,30,23,.14);
+  --font:'Bricolage Grotesque', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono:'JetBrains Mono', ui-monospace, Consolas, monospace;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){--bg:#1A130F;--surface:#251A14;--ink:#F3EBDD;--muted:#C9B6A2;--line:rgba(243,235,221,.12)}
+}
+:root[data-theme="dark"]{--bg:#1A130F;--surface:#251A14;--ink:#F3EBDD;--muted:#C9B6A2;--line:rgba(243,235,221,.12)}
+
+/* Mascota */
+.moka{width:100%;height:auto;display:block;overflow:visible}
+.moka .bob{animation:bob 3.2s ease-in-out infinite}
+.moka .eyes{transform-box:fill-box;transform-origin:center;animation:wink 5s infinite}
+.moka .arm-wave{transform-origin:46px 124px;animation:wave 1.8s ease-in-out infinite}
+.moka .steam path{animation:rise 3s ease-in-out infinite}
+.moka .steam path:nth-child(2){animation-delay:-1s}
+.moka .steam path:nth-child(3){animation-delay:-2s}
+.moka .shadow{transform-box:fill-box;transform-origin:center;animation:shadow 3.2s ease-in-out infinite}
+
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes shadow{0%,100%{transform:scaleX(1);opacity:.35}50%{transform:scaleX(.85);opacity:.22}}
+@keyframes wink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
+@keyframes wave{0%,100%{transform:rotate(0)}50%{transform:rotate(-22deg)}}
+@keyframes rise{0%{transform:translateY(6px);opacity:0}30%{opacity:1}100%{transform:translateY(-14px);opacity:0}}
+@keyframes hover1{0%,100%{translate:0 0}50%{translate:0 -10px}}
+@keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes blink{50%{opacity:0}}
+@keyframes eq{0%,100%{height:1.5cqw}50%{height:5cqw}}
+@keyframes enter{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+.hero .copy-col>*{animation:enter .7s cubic-bezier(.2,.7,.2,1) both}
+.hero .copy-col>*:nth-child(2){animation-delay:.08s}.hero .copy-col>*:nth-child(3){animation-delay:.16s}.hero .copy-col>*:nth-child(4){animation-delay:.24s}.hero .copy-col>*:nth-child(5){animation-delay:.32s}
+
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}

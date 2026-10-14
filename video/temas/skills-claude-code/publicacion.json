@@ -1,0 +1,20 @@
+{
+  "slug": "skills-claude-code",
+  "urlVideo": "",
+  "youtube": {
+    "titulo": "Skills en Claude Code: qué son y cómo crear una",
+    "descripcion": "Una skill es una carpeta con un archivo SKILL.md: un encabezado con nombre y descripción, y debajo tus instrucciones. En este video creas tu primera skill en Claude Code, la validas con claude plugin validate y la pruebas con una barra y su nombre. También ves cómo depurar si no aparece y los errores más comunes.\n\nPágina del tema con todo el código para copiar: {URL}\n\nLas fuentes están listadas al final de la página del tema.",
+    "etiquetas": ["Claude Code", "skills", "SKILL.md", "Agent Skills", "inteligencia artificial", "programación", "tutorial", "Code & Coffee"]
+  },
+  "facebook": {
+    "video": "Skills en Claude Code: qué son y cómo crear una. Convierte las instrucciones que repites en el chat en una skill que Claude carga sola o que llamas con una barra. Todo el paso a paso y el código para copiar: {URL}",
+    "short": "Crea tu primera skill en 3 pasos: carpeta, SKILL.md y una barra con su nombre.\n\nVideo completo: {URL_VIDEO}\nPágina del tema, con el código para copiar: {URL}"
+  },
+  "tiktok": {
+    "texto": "Crea tu primera skill en Claude Code en 3 pasos: carpeta, SKILL.md y una barra con su nombre.\nVideo completo: {URL_VIDEO}\nCódigo para copiar: {URL}\n#ClaudeCode #skills #programacion #IA"
+  },
+  "instagram": {
+    "reel": "Crea tu primera skill en 3 pasos: carpeta, SKILL.md y una barra con su nombre.\n\nVideo completo: {URL_VIDEO}\nPágina del tema, con el código para copiar: {URL}\n\n#ClaudeCode #skills #programacion #IA #desarrollo",
+    "carrusel": "Crea tu primera skill en Claude Code, paso a paso: qué es, los 3 pasos y un error común. Guárdalo para tenerlo a mano.\n\nVideo completo en YouTube y Facebook. Código para copiar en la página del tema: {URL}\n\n#ClaudeCode #skills #programacion #IA #desarrollo"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "slug": "skills-claude-code",
+  "slides": [
+    { "tipo": "portada" },
+    { "tipo": "texto", "titulo": "¿Qué es una skill?", "texto": "Una carpeta con un archivo SKILL.md e instrucciones para Claude. Claude la carga cuando tu petición encaja con su descripción, o tú la llamas con una barra y su nombre." },
+    { "tipo": "texto", "titulo": "¿Cuándo te conviene?", "texto": "Cuando repites las mismas instrucciones en el chat. Además, el cuerpo de la skill solo se carga al usarla: al inicio, Claude solo ve el nombre y la descripción." },
+    { "tipo": "paso", "numero": 1, "titulo": "Crea la carpeta", "nota": "Su nombre será el nombre del comando.", "codigo": { "archivo": "terminal", "lenguaje": "bash", "contenido": "mkdir -p $HOME/.claude/skills/summarize-changes" } },
+    { "tipo": "paso", "numero": 2, "titulo": "Escribe SKILL.md", "nota": "Nombre, descripción e instrucción.", "codigo": { "archivo": "SKILL.md", "lenguaje": "markdown", "contenido": "---\nname: summarize-changes\ndescription: Resume los cambios sin commit. Úsala cuando pregunten qué cambió.\n---\n\nResume los cambios en dos o tres viñetas y lista los riesgos." } },
+    { "tipo": "paso", "numero": 3, "titulo": "Pruébala", "nota": "Una barra y el nombre de la skill.", "codigo": { "archivo": "Claude Code", "lenguaje": "bash", "contenido": "/summarize-changes" } },
+    { "tipo": "error", "problema": "La skill no se activa sola", "solucion": "La descripción no tiene las palabras que usarías al pedirlo. Escríbela en lenguaje natural, con el caso clave primero." },
+    { "tipo": "cierre", "titulo": "¿Te sirvió? Guárdalo", "texto": "Guarda este carrusel y ten a mano los 3 pasos. El código completo está en la página del tema: enlace en la bio.", "canales": "Video completo en YouTube y Facebook" }
+  ]
+}

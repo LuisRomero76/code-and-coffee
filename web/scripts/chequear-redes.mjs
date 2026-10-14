@@ -7,7 +7,8 @@
 // - Carrusel (video/temas/<slug>/carrusel.json): 6-10 slides, portada primero y cierre al final, textos cortos,
 //   y los PNG exportados en video/salida/<slug>-carrusel/ miden 1080x1350.
 // - Publicación (video/temas/<slug>/publicacion.json): campos de YouTube, Facebook, TikTok e Instagram con sus límites.
-//   {URL} se reemplaza por la dirección del tema al publicar; el dominio todavía no está definido.
+//   {URL} (página del tema) y {URL_VIDEO} (video completo en YouTube) se reemplazan al publicar con
+//   node video/plantilla/textos.mjs <slug>. El video completo lleva {URL}; los shorts, {URL} y {URL_VIDEO}.
 // Sale con código 1 si hay errores; los avisos no hacen fallar.
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs'
 import { join } from 'node:path'
@@ -69,33 +70,46 @@ function chequearCarrusel(slug, errores, avisos) {
   }
 }
 
-function chequearPublicacion(slug, errores) {
+function chequearPublicacion(slug, errores, avisos) {
   const archivo = join(RAIZ, 'video/temas', slug, 'publicacion.json')
   if (!existsSync(archivo)) return errores.push('publicación: falta video/temas/' + slug + '/publicacion.json')
   const p = JSON.parse(readFileSync(archivo, 'utf8'))
+  // Largo real del texto ya con las URLs puestas (la del sitio sale de video/plantilla/sitio.json).
+  const archivoSitio = join(RAIZ, 'video/plantilla/sitio.json')
+  const sitio = existsSync(archivoSitio) ? JSON.parse(readFileSync(archivoSitio, 'utf8')).sitio : 'https://ejemplo.workers.dev'
+  const largo = (t) => t.replaceAll('{URL}', `${sitio}/temas/${slug}`).replaceAll('{URL_VIDEO}', 'https://youtu.be/XXXXXXXXXXX').length
+  const pide = (ruta, texto, ...marcas) => { for (const m of marcas) if (!texto.includes(m)) errores.push(`publicación: ${ruta} debe incluir ${m}`) }
+  if (!p.urlVideo) avisos.push('publicación: "urlVideo" está vacío; llénalo cuando subas el video completo a YouTube y ejecuta node video/plantilla/textos.mjs ' + slug)
   const ex = (ruta, v) => (v === undefined || v === '' ? (errores.push(`publicación: falta ${ruta}`), false) : true)
   const yt = p.youtube ?? {}
   if (ex('youtube.titulo', yt.titulo) && yt.titulo.length > 100) errores.push(`publicación: youtube.titulo mide ${yt.titulo.length} caracteres (máximo 100)`)
   if (ex('youtube.descripcion', yt.descripcion) && !yt.descripcion.includes('{URL}')) errores.push('publicación: youtube.descripcion debe incluir {URL}')
   if (!Array.isArray(yt.etiquetas) || yt.etiquetas.length < 3 || yt.etiquetas.length > 12) errores.push('publicación: youtube.etiquetas debe tener entre 3 y 12')
-  for (const k of ['video', 'short']) {
-    if (ex(`facebook.${k}`, p.facebook?.[k]) && !p.facebook[k].includes('{URL}')) errores.push(`publicación: facebook.${k} debe incluir {URL}`)
-  }
+  // Reglas de Luis: el video completo (YouTube y Facebook) lleva la página del tema ({URL});
+  // los shorts (Facebook, TikTok, Reel) llevan la página ({URL}) y el video completo ({URL_VIDEO}).
+  if (ex('facebook.video', p.facebook?.video)) pide('facebook.video', p.facebook.video, '{URL}')
+  if (ex('facebook.short', p.facebook?.short)) pide('facebook.short', p.facebook.short, '{URL}', '{URL_VIDEO}')
   const tt = p.tiktok?.texto
   if (ex('tiktok.texto', tt)) {
-    if (tt.length > 300) errores.push(`publicación: tiktok.texto mide ${tt.length} caracteres (máximo 300)`)
+    if (largo(tt) > 400) errores.push(`publicación: tiktok.texto mide ${largo(tt)} caracteres con las URLs puestas (máximo 400)`)
     if (hashtags(tt) > 5) errores.push('publicación: tiktok.texto tiene más de 5 hashtags')
-    if (!/bio/i.test(tt)) errores.push('publicación: tiktok.texto debe decir que el enlace está en la bio (los enlaces del texto no se pueden tocar)')
+    pide('tiktok.texto', tt, '{URL}', '{URL_VIDEO}')
   }
-  for (const k of ['reel', 'carrusel']) {
-    const t = p.instagram?.[k]
-    if (!ex(`instagram.${k}`, t)) continue
-    if (t.length > 2200) errores.push(`publicación: instagram.${k} mide ${t.length} caracteres (máximo 2200)`)
-    if (hashtags(t) > 10) errores.push(`publicación: instagram.${k} tiene más de 10 hashtags`)
-    if (!/bio/i.test(t)) errores.push(`publicación: instagram.${k} debe decir que el enlace está en la bio`)
+  const ig = p.instagram ?? {}
+  if (ex('instagram.reel', ig.reel)) {
+    if (largo(ig.reel) > 2200) errores.push(`publicación: instagram.reel mide ${largo(ig.reel)} caracteres con las URLs puestas (máximo 2200)`)
+    if (hashtags(ig.reel) > 10) errores.push('publicación: instagram.reel tiene más de 10 hashtags')
+    pide('instagram.reel', ig.reel, '{URL}', '{URL_VIDEO}')
   }
-  const todo = JSON.stringify(p)
-  if (/https?:\/\//i.test(todo)) errores.push('publicación: hay una URL escrita; usa {URL} (el dominio no está definido)')
+  if (ex('instagram.carrusel', ig.carrusel)) {
+    if (largo(ig.carrusel) > 2200) errores.push(`publicación: instagram.carrusel mide ${largo(ig.carrusel)} caracteres con las URLs puestas (máximo 2200)`)
+    if (hashtags(ig.carrusel) > 10) errores.push('publicación: instagram.carrusel tiene más de 10 hashtags')
+    pide('instagram.carrusel', ig.carrusel, '{URL}')
+  }
+  // Las URLs reales no se escriben a mano en los textos: se usan {URL} y {URL_VIDEO} (urlVideo sí es una URL).
+  const { urlVideo, ...textos } = p
+  if (/https?:\/\//i.test(JSON.stringify(textos))) errores.push('publicación: hay una URL escrita a mano; usa {URL} y {URL_VIDEO}')
+  if (urlVideo && !/^https:\/\//.test(urlVideo)) errores.push('publicación: urlVideo debe ser una URL https')
 }
 
 let fallos = 0
@@ -103,7 +117,7 @@ for (const slug of slugsPedidos()) {
   const errores = []
   const avisos = []
   let seg
-  for (const f of [() => (seg = chequearShort(slug, errores, avisos)), () => chequearCarrusel(slug, errores, avisos), () => chequearPublicacion(slug, errores)]) {
+  for (const f of [() => (seg = chequearShort(slug, errores, avisos)), () => chequearCarrusel(slug, errores, avisos), () => chequearPublicacion(slug, errores, avisos)]) {
     try { f() } catch (e) { errores.push(`no se pudo leer un archivo: ${e.message}`) }
   }
   if (errores.length) fallos++

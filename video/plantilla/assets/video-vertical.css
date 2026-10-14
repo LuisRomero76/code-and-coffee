@@ -1,0 +1,53 @@
+/* Code & Coffee: estilo del short vertical (1080x1920). Usa los colores de tokens.css.
+   Zonas seguras de TikTok, Reels y Shorts: la interfaz de la app tapa ~150px arriba,
+   ~340px abajo y ~120px a la derecha. El contenido vive dentro de esas zonas. */
+html, body { margin: 0; background: #1E1611; }
+#root {
+  position: relative; width: 100%; height: 100%; overflow: hidden;
+  font-family: var(--font); color: var(--crema);
+  background:
+    radial-gradient(ellipse 80% 45% at 85% 6%, rgba(217,119,87,.32), rgba(217,119,87,0) 70%),
+    radial-gradient(circle at 1px 1px, rgba(243,235,221,.07) 1.5px, transparent 2px) 0 0 / 36px 36px,
+    var(--tostado);
+}
+.escena { position: absolute; inset: 0; }
+.escena .cuerpo { position: absolute; left: 72px; right: 120px; top: 230px; bottom: 620px; display: flex; flex-direction: column; min-width: 0; }
+#root.sin-subs .escena .cuerpo { bottom: 360px; }
+
+#marca { position: absolute; top: 118px; left: 72px; font-size: 34px; font-weight: 600; color: rgba(243,235,221,.75); letter-spacing: .02em; z-index: 5; }
+#marca i { font-family: 'Fraunces', serif; font-style: italic; font-weight: 600; color: var(--terracota); }
+#prog { position: absolute; left: 0; top: 0; height: 10px; width: 100%; background: var(--terracota); transform-origin: left center; z-index: 5; }
+
+.etiqueta { align-self: flex-start; background: var(--terracota); color: var(--tostado); font-weight: 800; font-size: 36px; padding: 10px 28px; border-radius: 999px; letter-spacing: .04em; text-transform: uppercase; }
+h1, h2 { margin: 0; font-weight: 800; font-stretch: 80%; line-height: 1.02; overflow-wrap: anywhere; }
+h2 { font-size: 96px; color: var(--crema); }
+
+/* gancho */
+.gancho .cuerpo { justify-content: center; gap: 40px; }
+.gancho h1 { font-size: 168px; color: var(--crema); }
+.gancho .subt { font-size: 84px; font-weight: 800; font-stretch: 80%; color: var(--brasa); line-height: 1.05; }
+
+/* paso */
+.cabecera { display: flex; align-items: center; gap: 28px; margin-bottom: 12px; }
+.cabecera .num { flex: none; width: 104px; height: 104px; border-radius: 50%; background: var(--terracota); color: var(--tostado); font-weight: 800; font-size: 64px; display: grid; place-items: center; }
+.cabecera h2 { font-size: 84px; min-width: 0; }
+.nota { font-size: 38px; color: var(--brasa); margin: 0 0 26px; font-weight: 600; line-height: 1.2; }
+.panel { flex: 0 1 auto; min-height: 0; background: #140E0B; border: 2px solid rgba(243,235,221,.14); border-radius: 26px; display: flex; flex-direction: column; min-width: 0; overflow: hidden; }
+.panel .barra { flex: none; padding: 14px 30px; font-family: var(--mono); font-size: 28px; font-weight: 600; color: var(--brasa); border-bottom: 2px solid rgba(243,235,221,.1); background: rgba(243,235,221,.04); }
+.panel pre { margin: 0; padding: 26px 30px; font-family: var(--mono); color: var(--crema); white-space: pre-wrap; overflow-wrap: anywhere; word-break: break-word; line-height: 1.42; min-width: 0; }
+.panel .cm { color: rgba(243,235,221,.5); }
+.panel .k { color: var(--brasa); }
+
+/* cierre */
+.cierre .cuerpo { justify-content: center; gap: 36px; }
+.cierre h2 { font-size: 104px; }
+.cierre .canal { background: var(--espresso); border-left: 14px solid var(--terracota); border-radius: 26px; padding: 34px 44px; font-size: 52px; font-weight: 800; line-height: 1.15; }
+.cierre p.texto { margin: 0; font-size: 46px; line-height: 1.25; color: rgba(243,235,221,.9); }
+.ruta { background: #140E0B; border: 3px solid var(--terracota); border-radius: 26px; padding: 30px 36px; font-family: var(--mono); font-weight: 600; font-size: 44px; color: var(--crema); overflow-wrap: anywhere; white-space: pre-wrap; }
+.ruta .dom { color: var(--brasa); }
+
+/* subtitulos */
+.subs { position: absolute; left: 72px; right: 120px; bottom: 340px; height: 240px; display: flex; align-items: center; justify-content: center; }
+.sub p { margin: 0; }
+.sub { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; text-align: center; font-size: 58px; font-weight: 700; line-height: 1.3; opacity: 0; }
+.sub span.w { padding: 0 8px; border-radius: 12px; color: var(--crema); background-color: rgba(217,119,87,0); }

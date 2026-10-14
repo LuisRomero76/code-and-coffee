@@ -1,0 +1,51 @@
+{
+  "slug": "skills-claude-code",
+  "formato": "vertical",
+  "voz": "es-BO-MarceloNeural",
+  "subtitulos": true,
+  "escenas": [
+    {
+      "tipo": "gancho",
+      "narracion": "¿Sabías que puedes enseñarle una tarea a Claude Code una sola vez y repetirla cuando quieras? Eso es una skill, y la creas en tres pasos.",
+      "pantalla": "Gancho: crea tu primera skill en 3 pasos",
+      "etiqueta": "Claude Code",
+      "titulo": "Crea tu primera skill en 3 pasos",
+      "subtitulo": "Enséñale una tarea una vez y repítela con un comando"
+    },
+    {
+      "tipo": "paso",
+      "narracion": "Primero, crea una carpeta para tu skill dentro de la carpeta de skills de tu usuario. El nombre de esa carpeta será el nombre de tu comando.",
+      "pantalla": "Paso 1: comando mkdir",
+      "numero": 1,
+      "titulo": "Crea la carpeta",
+      "nota": "El nombre de la carpeta es el nombre del comando.",
+      "codigo": { "archivo": "terminal", "lenguaje": "bash", "contenido": "mkdir -p $HOME/.claude/skills/summarize-changes" }
+    },
+    {
+      "tipo": "paso",
+      "narracion": "Segundo, dentro de la carpeta escribe un archivo llamado SKILL.md. Arriba, entre dos rayas, van el nombre y una descripción de cuándo usarla. Abajo, en una frase, lo que quieres que haga Claude.",
+      "pantalla": "Paso 2: SKILL.md corto",
+      "numero": 2,
+      "titulo": "Escribe SKILL.md",
+      "nota": "Nombre, descripción e instrucción.",
+      "codigo": { "archivo": "SKILL.md", "lenguaje": "markdown", "contenido": "---\nname: summarize-changes\ndescription: Resume los cambios sin commit. Úsala cuando pregunten qué cambió.\n---\n\nResume los cambios en dos o tres viñetas y lista los riesgos." }
+    },
+    {
+      "tipo": "paso",
+      "narracion": "Tercero, abre Claude Code y escribe una barra seguida del nombre de tu skill. Si responde como esperabas, ya la tienes funcionando.",
+      "pantalla": "Paso 3: invocar con barra",
+      "numero": 3,
+      "titulo": "Pruébala",
+      "nota": "Una barra y el nombre de la skill.",
+      "codigo": { "archivo": "Claude Code", "lenguaje": "bash", "contenido": "/summarize-changes" }
+    },
+    {
+      "tipo": "cierre",
+      "narracion": "Mira el video completo en nuestro canal de YouTube o en Facebook, donde ves cómo validarla y arreglar errores. Y en la página de este tema tienes todo el código para copiar.",
+      "pantalla": "Invitación al video completo y a la página",
+      "titulo": "¿Quieres el paso a paso completo?",
+      "canales": "Video completo en YouTube y Facebook",
+      "texto": "Y todo el código para copiar en la página del tema."
+    }
+  ]
+}

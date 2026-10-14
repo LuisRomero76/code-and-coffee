@@ -23,10 +23,15 @@ Thumbs.db
 
 # Uso interno (no se publica)
 .agents/
-video/
 .claude/
 CLAUDE.md
 trabajo/
 video/temas/*/.hyperframes/
 video/temas/*/short/audio/
 video/temas/*/short/.hyperframes/
+video/temas/*/.thumbnails/
+video/temas/*/short/.thumbnails/
+# Generados con video/plantilla/generar.mjs y carrusel.mjs (se regeneran desde los guiones)
+video/temas/*/index.html
+video/temas/*/short/index.html
+video/temas/*/carrusel/
