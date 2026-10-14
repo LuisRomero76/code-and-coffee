@@ -1,0 +1,125 @@
+{
+  "slug": "skills-claude-code",
+  "estado": "publicado",
+  "fecha": "2026-10-13",
+  "hero": {
+    "migas": "Temas / Skills",
+    "titulo": "Skills en Claude Code",
+    "subtitulo": "qué son y cómo crear una",
+    "intro": "Vas a convertir esas instrucciones que repites en el chat en una skill que Claude carga sola o que llamas con una barra.",
+    "duracion": "5 min",
+    "tueste": 1,
+    "tarjetas": [
+      "$ claude plugin validate .claude/skills",
+      "SKILL.md"
+    ]
+  },
+  "secciones": {
+    "queEs": [
+      "Una skill es una carpeta con un archivo llamado SKILL.md. Dentro van instrucciones para Claude. Claude la carga cuando tu petición encaja con su descripción, o tú la invocas escribiendo barra y su nombre. Sigue el estándar abierto Agent Skills, con extras propios de Claude Code.",
+      "¿Cuándo te conviene? Cuando repites las mismas instrucciones en el chat, o cuando una sección de tu CLAUDE.md ya se volvió un procedimiento. Lo mejor: el cuerpo de la skill solo se carga al usarla. Al inicio, Claude solo ve el nombre y la descripción, así que el material largo cuesta poco hasta que hace falta.",
+      "Un dato reciente: los comandos personalizados se fusionaron con las skills. Un archivo en .claude/commands y una skill en .claude/skills crean el mismo comando con barra, y los commands antiguos siguen funcionando.",
+      "Puedes guardarlas en dos sitios: en .claude/skills de tu proyecto, para compartirlas con el equipo haciendo commit, o en .claude/skills de tu usuario, para usarlas en todos tus proyectos. Si dos tienen el mismo nombre, la personal gana a la del proyecto."
+    ],
+    "requisitos": [
+      "Claude Code instalado en tu terminal",
+      "Un proyecto o tu carpeta de usuario donde guardar la skill",
+      "Saber lo básico de YAML para el encabezado del archivo",
+      "En Windows, Git Bash: el ejemplo ejecuta comandos de bash"
+    ],
+    "pasos": [
+      {
+        "titulo": "Crea la carpeta de la skill",
+        "texto": "El nombre de la carpeta será el nombre del comando. Este ejemplo crea una skill personal; para una de proyecto, usa .claude/skills dentro del repo.",
+        "codigo": {
+          "archivo": "terminal",
+          "lenguaje": "bash",
+          "contenido": "mkdir -p $HOME/.claude/skills/summarize-changes"
+        },
+        "probado": true
+      },
+      {
+        "titulo": "Escribe el archivo SKILL.md",
+        "texto": "Arriba va el frontmatter, un encabezado entre tres guiones con nombre y descripción, empezando en la primera línea. Debajo, las instrucciones. La línea con signo de exclamación ejecuta git diff antes de que Claude lea la skill y pega su salida ahí. Si ese comando falla, la skill se cancela; por eso, cuando git diff falla, el ejemplo muestra un aviso en su lugar. Mantén el archivo por debajo de 500 líneas; si necesitas más material, crea archivos de apoyo, como un reference.md o una carpeta scripts, y enlázalos desde SKILL.md con rutas relativas.",
+        "codigo": {
+          "archivo": "SKILL.md",
+          "lenguaje": "markdown",
+          "contenido": "---\nname: summarize-changes\ndescription: Resume los cambios sin commit y señala lo riesgoso. Úsala cuando pregunten qué cambió o pidan un mensaje de commit.\n---\n\n## Cambios actuales\n\n!`git diff HEAD 2>/dev/null || echo \"No hay cambios que mostrar.\"`\n\n## Instrucciones\n\nResume los cambios de arriba en dos o tres viñetas y luego lista los riesgos."
+        },
+        "probado": true
+      },
+      {
+        "titulo": "Valida el frontmatter",
+        "texto": "Este comando revisa que el encabezado esté bien escrito. Si algo falla en el YAML, te avisa. Necesitas Claude Code 2.1.233 o superior.",
+        "codigo": {
+          "archivo": "terminal",
+          "lenguaje": "bash",
+          "contenido": "claude plugin validate $HOME/.claude/skills"
+        },
+        "probado": true
+      },
+      {
+        "titulo": "Pruébala en una sesión",
+        "texto": "Invócala con barra y su nombre, o pide algo que encaje con la descripción, como qué cambió en el repo. Para ver qué skills tiene Claude, pregúntaselo.",
+        "codigo": {
+          "archivo": "Claude Code",
+          "lenguaje": "text",
+          "contenido": "/summarize-changes\n\nWhat skills are available?"
+        },
+        "probado": true
+      },
+      {
+        "titulo": "Depura si no aparece",
+        "texto": "Este comando abre una sesión y guarda su registro en un archivo. Sal con /exit y busca las líneas con failed to parse y el nombre de tu skill. Si no sale nada, el registro no detectó errores. Solo avisa de algunos errores de sintaxis YAML; para lo demás, como un encabezado sin la línea de cierre o un campo mal escrito, usa claude plugin validate. Ojo: claude --debug solo no muestra estos errores en pantalla.",
+        "codigo": {
+          "archivo": "terminal",
+          "lenguaje": "bash",
+          "contenido": "claude --debug-file debug.log\n# Dentro de la sesión, sal con /exit\n\n# PowerShell\nSelect-String -Path debug.log -Pattern \"failed to parse\" | Select-String \"summarize-changes\"\n\n# Otros terminales\ngrep -i \"failed to parse\" debug.log | grep summarize-changes"
+        },
+        "probado": true
+      }
+    ],
+    "mokaDice": {
+      "paso": 2,
+      "texto": "La descripción lo es todo. Pon primero el caso clave y usa las palabras que tú dirías al pedirlo. Si la descripción es vaga, Claude no sabrá cuándo cargar tu skill."
+    },
+    "errores": [
+      {
+        "problema": "La skill no se activa sola",
+        "solucion": "La descripción no tiene las palabras que usarías al pedirlo. Escríbela con lenguaje natural y el caso clave primero, comprueba que aparece entre las skills disponibles o invócala con barra y su nombre."
+      },
+      {
+        "problema": "Claude no usa la descripción aunque la invocas con barra",
+        "solucion": "El YAML está mal formado o los tres guiones no están en la primera línea. La skill carga sin metadatos. Revísalo primero con claude plugin validate y luego con claude --debug-file."
+      },
+      {
+        "problema": "Un campo del frontmatter no hace nada",
+        "solucion": "Los campos desconocidos se ignoran sin aviso. Escribe cada nombre exactamente como en la documentación."
+      },
+      {
+        "problema": "Claude deja de seguir la skill tras unos turnos",
+        "solucion": "El contenido no se vuelve a leer. Escríbela para toda la tarea y vuelve a invocarla. Pon lo importante arriba: cuando Claude resume la conversación, solo conserva el inicio."
+      },
+      {
+        "problema": "En Windows falla con el aviso de que no encuentra Git Bash",
+        "solucion": "Por defecto, los comandos con exclamación usan bash. Instala Git Bash. Si prefieres PowerShell, añade shell: powershell en el frontmatter y reescribe esos comandos en su sintaxis: el ejemplo usa la de bash."
+      }
+    ],
+    "resumen": "Una skill es una carpeta con un SKILL.md: un encabezado con nombre y descripción, y debajo tus instrucciones. Créala en tu proyecto o en tu carpeta de usuario, valídala con claude plugin validate y pruébala con barra y su nombre. Cuida la descripción, escribe bien los nombres de los campos y, si algo falla, empieza por claude plugin validate. Así dejas de repetir instrucciones y Claude trabaja a tu manera."
+  },
+  "miniatura": {
+    "titulo": "Crea tu primera",
+    "resaltado": "skill",
+    "etiqueta": "Claude Code",
+    "variante": "t1",
+    "moka": {
+      "expresion": "happy",
+      "pose": "point"
+    },
+    "tarjeta": "SKILL.md"
+  },
+  "fuentes": [
+    "https://code.claude.com/docs/en/skills",
+    "https://agentskills.io/specification"
+  ]
+}

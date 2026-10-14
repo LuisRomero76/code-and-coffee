@@ -1,0 +1,33 @@
+{
+  "name": "code-and-coffee-web",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc -b && cf build",
+    "preview": "vite preview",
+    "deploy": "vue-tsc -b && cf deploy",
+    "contar-palabras": "node scripts/contar-palabras.mjs",
+    "chequear-tema": "node scripts/chequear-tema.mjs",
+    "chequear-publico": "node scripts/chequear-publico.mjs",
+    "verificar-responsive": "node scripts/verificar-responsive.mjs",
+    "verificar": "npm run build && node scripts/contar-palabras.mjs && node scripts/chequear-tema.mjs && node scripts/chequear-publico.mjs && node scripts/verificar-responsive.mjs",
+    "chequear-redes": "node scripts/chequear-redes.mjs"
+  },
+  "dependencies": {
+    "vue": "^3.5.42",
+    "vue-router": "^5.4.0"
+  },
+  "devDependencies": {
+    "@cloudflare/vite-plugin": "^2.0.0-beta.sha-8c6014f9a",
+    "@types/node": "^24.13.3",
+    "@vitejs/plugin-vue": "^6.0.8",
+    "@vue/tsconfig": "^0.9.1",
+    "cf": "^1.0.0-beta.16",
+    "playwright-core": "^1.64.0",
+    "typescript": "~6.0.2",
+    "vite": "^8.3.0",
+    "vue-tsc": "^3.3.11"
+  }
+}

@@ -1,0 +1,6 @@
+# Generado en cada build por vite.config.ts (listado de temas para el Worker)
+worker/temas.generated.ts
+.wrangler/
+
+# Build Output y tipos generados por cf
+.cloudflare/

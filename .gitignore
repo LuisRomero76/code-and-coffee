@@ -22,6 +22,11 @@ video/temas/*/audio/
 Thumbs.db
 
 # Uso interno (no se publica)
+.agents/
+video/
 .claude/
 CLAUDE.md
 trabajo/
+video/temas/*/.hyperframes/
+video/temas/*/short/audio/
+video/temas/*/short/.hyperframes/
